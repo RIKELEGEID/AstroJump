@@ -1,6 +1,6 @@
 import pygame
 import sys
-from Settings import WINDOW_WIDTH, WINDOW_HEIGHT, button_height, button_width, button_gap
+from Settings import *
 
 
 class Menu:
@@ -8,18 +8,20 @@ class Menu:
         pygame.init()
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
-        bg = pygame.image.load()
-        self.screen.blit(bg, (0, 0))
 
-        # Set up colors
+        # colors
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
         self.button_color = (50, 50, 50)
         self.quit_button_color = (125, 50, 50)
         self.hover_color = (100, 100, 100)
 
-        # Create a font object
-        self.font = pygame.font.Font(None, 36)
+        # fonts
+        self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 36)
+
+        # sounds
+        self.button_sound = pygame.mixer.Sound("Sounds/button_sound3.mp3")
+        self.button_sound.set_volume(button_volume)
 
     def draw_text(self, text, font, color, x, y):
         text_obj = font.render(text, True, color)
@@ -28,28 +30,29 @@ class Menu:
 
     def draw_button(self, text, rect, color):
         pygame.draw.rect(self.screen, color, rect)
-        text_surface = self.font.render(text, True, self.white)
+        text_surface = self.font_custom.render(text, True, self.white)
         text_rect = text_surface.get_rect(center=rect.center)
         self.screen.blit(text_surface, text_rect)
 
     def main_menu(self):
         while True:
-            self.screen.fill(self.black)
+            bg = pygame.image.load("Graphics/backgrounds/BG.png")
+            self.screen.blit(bg, (0, 0))
 
-            self.draw_text("Main Menu", self.font, self.white, WINDOW_WIDTH // 2, 200)
+            self.draw_text("Astro Jump", self.font_custom, self.white, WINDOW_WIDTH // 2, 200)
 
             mx, my = pygame.mouse.get_pos()
 
-            button_resume = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 300, button_width, button_height)
-            button_editor = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 400, button_width, button_height)
+            button_play = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 300, button_width, button_height)
+            button_tutorial = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 400, button_width, button_height)
             button_quit = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 500, button_width, button_height)
 
-            resume_hovered = button_resume.collidepoint((mx, my))
-            editor_hovered = button_editor.collidepoint((mx, my))
+            play_hovered = button_play.collidepoint((mx, my))
+            tutorial_hovered = button_tutorial.collidepoint((mx, my))
             quit_hovered = button_quit.collidepoint((mx, my))
 
-            self.draw_button("Resume", button_resume, self.hover_color if resume_hovered else self.button_color)
-            self.draw_button("Settings", button_editor, self.hover_color if editor_hovered else self.button_color)
+            self.draw_button("Play", button_play, self.hover_color if play_hovered else self.button_color)
+            self.draw_button("Tutorial", button_tutorial, self.hover_color if tutorial_hovered else self.button_color)
             self.draw_button("Quit Game", button_quit, self.hover_color if quit_hovered else self.quit_button_color)
 
             for event in pygame.event.get():
@@ -58,11 +61,13 @@ class Menu:
                     sys.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if resume_hovered:
+                    if play_hovered:
+                        self.button_sound.play()
                         selected_level = self.level_select()
                         print(f"Selected Level: {selected_level}")
-                    elif editor_hovered:
-                        print("Settings clicked")
+                    elif tutorial_hovered:
+                        self.button_sound.play()
+                        self.tutorial()
                     elif quit_hovered:
                         pygame.quit()
                         sys.exit()
@@ -71,9 +76,10 @@ class Menu:
 
     def level_select(self):
         while True:
-            self.screen.fill(self.black)
+            level_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
+            self.screen.blit(level_bg, (0, 0))
 
-            self.draw_text("Select a Level", self.font, self.white, WINDOW_WIDTH // 2, 100)
+            self.draw_text("Select a Level", self.font_custom, self.white, WINDOW_WIDTH // 2, 100)
 
             mx, my = pygame.mouse.get_pos()
 
@@ -83,14 +89,17 @@ class Menu:
 
             if level1.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
                     print("Level 1 Selected")
                     return 1
             if level2.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
                     print("Level 2 Selected")
                     return 2
             if level3.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
                     print("Level 3 Selected")
                     return 3
 
@@ -98,9 +107,9 @@ class Menu:
             pygame.draw.rect(self.screen, self.button_color, level2)
             pygame.draw.rect(self.screen, self.button_color, level3)
 
-            self.draw_text("Level 1", self.font, self.white, level1.centerx, level1.centery)
-            self.draw_text("Level 2", self.font, self.white, level2.centerx, level2.centery)
-            self.draw_text("Level 3", self.font, self.white, level3.centerx, level3.centery)
+            self.draw_text("Level 1", self.font_custom, self.white, level1.centerx, level1.centery)
+            self.draw_text("Level 2", self.font_custom, self.white, level2.centerx, level2.centery)
+            self.draw_text("Level 3", self.font_custom, self.white, level3.centerx, level3.centery)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -109,4 +118,36 @@ class Menu:
 
             pygame.display.update()
 
+    def tutorial(self):
+        while True:
+            tutorial_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
+            self.screen.blit(tutorial_bg, (0, 0))
+
+            self.draw_text("Tutorial", self.font_custom, self.white, WINDOW_WIDTH // 2, 100)
+
+            mx, my = pygame.mouse.get_pos()
+
+            return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 700, button_width, button_height)
+            page1 = pygame.Rect(100, 200, 500, 400)
+            page2 = pygame.Rect(700, 200, 500, 400)
+
+            if return_button.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    return
+
+            pygame.draw.rect(self.screen, self.button_color, return_button)
+            pygame.draw.rect(self.screen, self.button_color, page1)
+            pygame.draw.rect(self.screen, self.button_color, page2)
+
+            self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
+            self.draw_text("First text", self.font_custom, self.white, page1.centerx, page1.centery)
+            self.draw_text("Second text", self.font_custom, self.white, page2.centerx, page2.centery)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            pygame.display.update()
 
