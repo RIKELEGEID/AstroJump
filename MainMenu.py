@@ -15,13 +15,16 @@ class Menu:
         self.button_color = (50, 50, 50)
         self.quit_button_color = (125, 50, 50)
         self.hover_color = (100, 100, 100)
+        self.slider_handle_color = (125, 50, 50)
 
         # fonts
         self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 36)
 
         # sounds
         self.button_sound = pygame.mixer.Sound("Sounds/button_sound3.mp3")
-        self.button_sound.set_volume(button_volume)
+        self.bg_music = "Sounds/BG_music.mp3"
+        pygame.mixer.music.load(self.bg_music)
+        pygame.mixer.music.play(-1)
 
     def draw_text(self, text, font, color, x, y):
         text_obj = font.render(text, True, color)
@@ -68,12 +71,15 @@ class Menu:
                         self.button_sound.play()
                         selected_level = self.level_select()
                         print(f"Selected Level: {selected_level}")
+
                     elif tutorial_hovered:
                         self.button_sound.play()
                         self.tutorial()
+
                     elif settings_hovered:
                         self.button_sound.play()
                         self.settings()
+
                     elif quit_hovered:
                         pygame.quit()
                         sys.exit()
@@ -90,29 +96,10 @@ class Menu:
             mx, my = pygame.mouse.get_pos()
 
             return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 700, button_width, button_height)
-            level1 = pygame.Rect((WINDOW_WIDTH - 3 * button_width - 2 * button_gap) // 2, 200, button_width, button_height)
+            level1 = pygame.Rect((WINDOW_WIDTH - 3 * button_width - 2 * button_gap) // 2, 200, button_width,
+                                 button_height)
             level2 = pygame.Rect(level1.right + button_gap, 200, button_width, button_height)
             level3 = pygame.Rect(level2.right + button_gap, 200, button_width, button_height)
-
-            if level1.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    print("Level 1 Selected")
-                    return 1
-            if level2.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    print("Level 2 Selected")
-                    return 2
-            if level3.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    print("Level 3 Selected")
-                    return 3
-            if return_button.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    return
 
             pygame.draw.rect(self.screen, self.button_color, return_button)
             pygame.draw.rect(self.screen, self.button_color, level1)
@@ -123,6 +110,29 @@ class Menu:
             self.draw_text("Level 1", self.font_custom, self.white, level1.centerx, level1.centery)
             self.draw_text("Level 2", self.font_custom, self.white, level2.centerx, level2.centery)
             self.draw_text("Level 3", self.font_custom, self.white, level3.centerx, level3.centery)
+
+            if level1.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    print("Level 1 Selected")
+                    return 1
+
+            if level2.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    print("Level 2 Selected")
+                    return 2
+
+            if level3.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    print("Level 3 Selected")
+                    return 3
+
+            if return_button.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    return
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -144,11 +154,6 @@ class Menu:
             page1 = pygame.Rect(100, 200, 500, 400)
             page2 = pygame.Rect(700, 200, 500, 400)
 
-            if return_button.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    return
-
             pygame.draw.rect(self.screen, self.button_color, return_button)
             pygame.draw.rect(self.screen, self.button_color, page1)
             pygame.draw.rect(self.screen, self.button_color, page2)
@@ -156,6 +161,11 @@ class Menu:
             self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
             self.draw_text("First text", self.font_custom, self.white, page1.centerx, page1.centery)
             self.draw_text("Second text", self.font_custom, self.white, page2.centerx, page2.centery)
+
+            if return_button.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    return
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -169,23 +179,85 @@ class Menu:
             tutorial_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
             self.screen.blit(tutorial_bg, (0, 0))
 
-            self.draw_text("Settings", self.font_custom, self.white, WINDOW_WIDTH // 2, 100)
-
             mx, my = pygame.mouse.get_pos()
 
             return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 700, button_width, button_height)
-            sfx_slider = pygame.Rect(WINDOW_WIDTH // 2 - slider_width // 2, 200, slider_width, slider_height)
+            sfx_vol1 = pygame.Rect(200, 300, button_width, button_height)
+            sfx_vol2 = pygame.Rect(200, 400, button_width, button_height)
+            sfx_vol3 = pygame.Rect(200, 500, button_width, button_height)
+            sfx_vol4 = pygame.Rect(200, 600, button_width, button_height)
+            music_vol1 = pygame.Rect(900, 300, button_width, button_height)
+            music_vol2 = pygame.Rect(900, 400, button_width, button_height)
+            music_vol3 = pygame.Rect(900, 500, button_width, button_height)
+            music_vol4 = pygame.Rect(900, 600, button_width, button_height)
+
+            pygame.draw.rect(self.screen, self.button_color, return_button)
+            pygame.draw.rect(self.screen, self.button_color, sfx_vol1)
+            pygame.draw.rect(self.screen, self.button_color, sfx_vol2)
+            pygame.draw.rect(self.screen, self.button_color, sfx_vol3)
+            pygame.draw.rect(self.screen, self.button_color, sfx_vol4)
+            pygame.draw.rect(self.screen, self.button_color, music_vol1)
+            pygame.draw.rect(self.screen, self.button_color, music_vol2)
+            pygame.draw.rect(self.screen, self.button_color, music_vol3)
+            pygame.draw.rect(self.screen, self.button_color, music_vol4)
+
+            self.draw_text("Settings", self.font_custom, self.white, WINDOW_WIDTH // 2, 100)
+            self.draw_text("SFX volume", self.font_custom, self.white, 300, 200)
+            self.draw_text("Music volume", self.font_custom, self.white, 1000, 200)
+            self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
+            self.draw_text("1", self.font_custom, self.white, sfx_vol1.centerx, sfx_vol1.centery)
+            self.draw_text("2", self.font_custom, self.white, sfx_vol2.centerx, sfx_vol2.centery)
+            self.draw_text("3", self.font_custom, self.white, sfx_vol3.centerx, sfx_vol3.centery)
+            self.draw_text("4", self.font_custom, self.white, sfx_vol4.centerx, sfx_vol4.centery)
+            self.draw_text("1", self.font_custom, self.white, music_vol1.centerx, music_vol1.centery)
+            self.draw_text("2", self.font_custom, self.white, music_vol2.centerx, music_vol2.centery)
+            self.draw_text("3", self.font_custom, self.white, music_vol3.centerx, music_vol3.centery)
+            self.draw_text("4", self.font_custom, self.white, music_vol4.centerx, music_vol4.centery)
+
+            if sfx_vol1.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    self.button_sound.set_volume(1)
+
+            if sfx_vol2.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    self.button_sound.set_volume(0.7)
+
+            if sfx_vol3.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    self.button_sound.set_volume(0.4)
+
+            if sfx_vol4.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    self.button_sound.set_volume(0.2)
+
+            if music_vol1.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    pygame.mixer.music.set_volume(1)
+
+            if music_vol2.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    pygame.mixer.music.set_volume(0.6)
+
+            if music_vol3.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    pygame.mixer.music.set_volume(0.3)
+
+            if music_vol4.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    pygame.mixer.music.set_volume(0.05)
 
             if return_button.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
                     self.button_sound.play()
                     return
-
-            pygame.draw.rect(self.screen, self.button_color, return_button)
-            pygame.draw.rect(self.screen, self.button_color, sfx_slider)
-
-            self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
-            self.draw_text("SFX slider", self.font_custom, self.white, sfx_slider.centerx, sfx_slider.centery)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
