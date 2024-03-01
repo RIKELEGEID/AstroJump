@@ -1,6 +1,7 @@
 import pygame
 import sys
 from Settings import *
+#from Map import Map
 
 
 class Menu:
@@ -8,6 +9,8 @@ class Menu:
         pygame.init()
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
+        #self.map = Map()
+        self.tile_images = [pygame.image.load(f'Graphics/tiles/tile{i}.png') for i in range(0, 4)]
 
         # colors
         self.black = (0, 0, 0)
@@ -70,7 +73,8 @@ class Menu:
                     if play_hovered:
                         self.button_sound.play()
                         selected_level = self.level_select()
-                        print(f"Selected Level: {selected_level}")
+                        if selected_level == 1:
+                            self.show_map()
 
                     elif tutorial_hovered:
                         self.button_sound.play()
@@ -265,3 +269,37 @@ class Menu:
                     sys.exit()
 
             pygame.display.update()
+
+    def show_map(self):
+
+        game_map = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [3, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        ]
+
+        tile_size = 64
+        for row in range(len(game_map)):
+            for col in range(len(game_map[row])):
+                tile_id = game_map[row][col]
+                tile_image = self.tile_images[tile_id]
+                tile_rect = tile_image.get_rect(topleft=(col * tile_size, row * tile_size))
+                self.screen.blit(tile_image, tile_rect)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            pygame.display.update()
+

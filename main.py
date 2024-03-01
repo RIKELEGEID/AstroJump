@@ -1,5 +1,5 @@
 import pygame
-from Settings import WINDOW_WIDTH, WINDOW_HEIGHT, volume
+from Settings import WINDOW_WIDTH, WINDOW_HEIGHT
 from MainMenu import Menu
 
 
