@@ -1,7 +1,7 @@
 import pygame
 import sys
 from Settings import *
-#from Map import Map
+import csv
 
 
 class Menu:
@@ -9,8 +9,7 @@ class Menu:
         pygame.init()
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
-        #self.map = Map()
-        self.tile_images = [pygame.image.load(f'Graphics/tiles/tile{i}.png') for i in range(0, 4)]
+        self.tile_images = [pygame.image.load(f'Graphics/tiles/tile{i}.png') for i in range(0, 13)]
 
         # colors
         self.black = (0, 0, 0)
@@ -118,8 +117,7 @@ class Menu:
             if level1.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
                     self.button_sound.play()
-                    print("Level 1 Selected")
-                    return 1
+                    self.show_map("levels/level1.csv")
 
             if level2.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
@@ -270,22 +268,16 @@ class Menu:
 
             pygame.display.update()
 
-    def show_map(self):
+    def show_map(self, map_filename=None):
+        if map_filename is None:
+            map_filename = "levels/level1.csv"
 
-        game_map = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [3, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        ]
+        # Load the map from the CSV file
+        game_map = []
+        with open("levels/level1.csv", 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                game_map.append([int(tile_id) for tile_id in row])
 
         tile_size = 64
         for row in range(len(game_map)):
