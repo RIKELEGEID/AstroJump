@@ -10,16 +10,15 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
-        self.tile_images = [pygame.image.load(f'Graphics/tiles/tile{i}.png') for i in
-                            range(0, 14)]  # todo: dynamické nářítaní libovolného počtu tilů    
+
+        num_tiles = 13
+        self.tile_images = [pygame.image.load(f'Graphics/tiles/{i}.png') for i in range(num_tiles)]
 
         # colors
-        self.black = (0, 0, 0)
         self.white = (255, 255, 255)
         self.button_color = (50, 50, 50)
         self.quit_button_color = (125, 50, 50)
         self.hover_color = (100, 100, 100)
-        self.slider_handle_color = (125, 50, 50)
 
         # player
         self.player = Player(100, 100, 50, 50, self.screen)
@@ -275,6 +274,7 @@ class Game:
 
     def show_map(self, map_filename=None):  # todo: rozkouskovat na map nebo level class
         while True:
+            self.screen.fill((4, 0, 17))
             if map_filename is None:
                 map_filename = "levels/level1.csv"
 
@@ -289,9 +289,16 @@ class Game:
             for row in range(len(game_map)):
                 for col in range(len(game_map[row])):
                     tile_id = game_map[row][col]
-                    tile_image = self.tile_images[tile_id]
-                    tile_rect = tile_image.get_rect(topleft=(col * tile_size, row * tile_size))
-                    self.screen.blit(tile_image, tile_rect)
+
+                    if tile_id != 0:  # Skip collision check for tiles with ID 0
+                        tile_image = self.tile_images[tile_id]
+                        tile_rect = tile_image.get_rect(topleft=(col * tile_size, row * tile_size))
+                        self.screen.blit(tile_image, tile_rect)
+
+                        # Check for collision between player and tile
+                        player_rect = pygame.Rect(self.player.x, self.player.y, self.player.width, self.player.height)
+                        if player_rect.colliderect(tile_rect):
+                            print("kolize")
 
             self.player.draw()
 
