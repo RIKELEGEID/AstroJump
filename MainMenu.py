@@ -2,14 +2,16 @@ import pygame
 import sys
 from Settings import *
 import csv
+from Player import Player
 
 
-class Menu:
+class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
-        self.tile_images = [pygame.image.load(f'Graphics/tiles/tile{i}.png') for i in range(0, 13)]
+        self.tile_images = [pygame.image.load(f'Graphics/tiles/tile{i}.png') for i in
+                            range(0, 14)]  # todo: dynamické nářítaní libovolného počtu tilů    
 
         # colors
         self.black = (0, 0, 0)
@@ -18,6 +20,9 @@ class Menu:
         self.quit_button_color = (125, 50, 50)
         self.hover_color = (100, 100, 100)
         self.slider_handle_color = (125, 50, 50)
+
+        # player
+        self.player = Player(100, 100, 50, 50, self.screen)
 
         # fonts
         self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 36)
@@ -207,14 +212,14 @@ class Menu:
             self.draw_text("SFX volume", self.font_custom, self.white, 300, 200)
             self.draw_text("Music volume", self.font_custom, self.white, 1000, 200)
             self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
-            self.draw_text("1", self.font_custom, self.white, sfx_vol1.centerx, sfx_vol1.centery)
-            self.draw_text("2", self.font_custom, self.white, sfx_vol2.centerx, sfx_vol2.centery)
-            self.draw_text("3", self.font_custom, self.white, sfx_vol3.centerx, sfx_vol3.centery)
-            self.draw_text("4", self.font_custom, self.white, sfx_vol4.centerx, sfx_vol4.centery)
-            self.draw_text("1", self.font_custom, self.white, music_vol1.centerx, music_vol1.centery)
-            self.draw_text("2", self.font_custom, self.white, music_vol2.centerx, music_vol2.centery)
-            self.draw_text("3", self.font_custom, self.white, music_vol3.centerx, music_vol3.centery)
-            self.draw_text("4", self.font_custom, self.white, music_vol4.centerx, music_vol4.centery)
+            self.draw_text("4", self.font_custom, self.white, sfx_vol1.centerx, sfx_vol1.centery)
+            self.draw_text("3", self.font_custom, self.white, sfx_vol2.centerx, sfx_vol2.centery)
+            self.draw_text("2", self.font_custom, self.white, sfx_vol3.centerx, sfx_vol3.centery)
+            self.draw_text("1", self.font_custom, self.white, sfx_vol4.centerx, sfx_vol4.centery)
+            self.draw_text("4", self.font_custom, self.white, music_vol1.centerx, music_vol1.centery)
+            self.draw_text("3", self.font_custom, self.white, music_vol2.centerx, music_vol2.centery)
+            self.draw_text("2", self.font_custom, self.white, music_vol3.centerx, music_vol3.centery)
+            self.draw_text("1", self.font_custom, self.white, music_vol4.centerx, music_vol4.centery)
 
             if sfx_vol1.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
@@ -268,30 +273,37 @@ class Menu:
 
             pygame.display.update()
 
-    def show_map(self, map_filename=None):
-        if map_filename is None:
-            map_filename = "levels/level1.csv"
-
-        # Load the map from the CSV file
-        game_map = []
-        with open("levels/level1.csv", 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                game_map.append([int(tile_id) for tile_id in row])
-
-        tile_size = 64
-        for row in range(len(game_map)):
-            for col in range(len(game_map[row])):
-                tile_id = game_map[row][col]
-                tile_image = self.tile_images[tile_id]
-                tile_rect = tile_image.get_rect(topleft=(col * tile_size, row * tile_size))
-                self.screen.blit(tile_image, tile_rect)
-
+    def show_map(self, map_filename=None):  # todo: rozkouskovat na map nebo level class
         while True:
+            if map_filename is None:
+                map_filename = "levels/level1.csv"
+
+            # Load the map from the CSV file
+            game_map = []
+            with open("levels/level1.csv", 'r') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    game_map.append([int(tile_id) for tile_id in row])
+
+            tile_size = 64
+            for row in range(len(game_map)):
+                for col in range(len(game_map[row])):
+                    tile_id = game_map[row][col]
+                    tile_image = self.tile_images[tile_id]
+                    tile_rect = tile_image.get_rect(topleft=(col * tile_size, row * tile_size))
+                    self.screen.blit(tile_image, tile_rect)
+
+            self.player.draw()
+
             for event in pygame.event.get():
+                self.player.handle_event(event)
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
+            if self.player.is_moving():
+                self.player.move()
+
             pygame.display.update()
+
 
