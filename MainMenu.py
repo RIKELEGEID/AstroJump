@@ -22,6 +22,7 @@ class Game:
 
         # player
         self.player = Player(100, 100, 50, 50, self.screen)
+        self.initial_player_position = (self.player.x, self.player.y)
 
         # fonts
         self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 36)
@@ -272,45 +273,70 @@ class Game:
 
             pygame.display.update()
 
-    def show_map(self, map_filename=None):  # todo: rozkouskovat na map nebo level class
+    def show_map(self, map_filename=None):
         while True:
-            self.screen.fill((4, 0, 17))
+            self.screen.fill((4, 0, 17))  # Clear the screen with a background color
             if map_filename is None:
-                map_filename = "levels/level1.csv"
+                map_filename = "levels/level1.csv"  # Default level if none provided
 
             # Load the map from the CSV file
             game_map = []
-            with open("levels/level1.csv", 'r') as file:
+            with open(map_filename, 'r') as file:
                 reader = csv.reader(file)
                 for row in reader:
                     game_map.append([int(tile_id) for tile_id in row])
 
-            tile_size = 64
-            for row in range(len(game_map)):
-                for col in range(len(game_map[row])):
-                    tile_id = game_map[row][col]
+            tile_size = 64  # Size of tiles, adjust based on your tileset
+            collision = False  # Flag to detect collision
 
-                    if tile_id != 0:  # Skip collision check for tiles with ID 0
+            # Draw tiles and check for collisions
+            for row_index, row in enumerate(game_map):
+                for col_index, tile_id in enumerate(row):
+                    if tile_id != 0:  # Skip drawing and collision check for tiles with ID 0
                         tile_image = self.tile_images[tile_id]
-                        tile_rect = tile_image.get_rect(topleft=(col * tile_size, row * tile_size))
+                        tile_rect = tile_image.get_rect(topleft=(col_index * tile_size, row_index * tile_size))
                         self.screen.blit(tile_image, tile_rect)
 
-                        # Check for collision between player and tile
                         player_rect = pygame.Rect(self.player.x, self.player.y, self.player.width, self.player.height)
                         if player_rect.colliderect(tile_rect):
-                            print("kolize")
+                            collision = True  # Collision detected
+                            break
+                if collision:
+                    break
 
-            self.player.draw()
-
+            # Event handling
             for event in pygame.event.get():
-                self.player.handle_event(event)
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                self.player.handle_event(event)
 
-            if self.player.is_moving():
-                self.player.move()
+            # Calculate new player position based on current inputs
+            new_x, new_y = self.player.calculate_new_position()
+            player_rect = pygame.Rect(new_x, new_y, self.player.width, self.player.height)
 
+            # Re-check for collisions with the new position
+            for row_index, row in enumerate(game_map):
+                for col_index, tile_id in enumerate(row):
+                    if tile_id != 0:
+                        tile_rect = pygame.Rect(col_index * tile_size, row_index * tile_size, tile_size, tile_size)
+                        if player_rect.colliderect(tile_rect):
+                            collision = True
+                            break
+                if collision:
+                    break
+
+            if not collision:
+                # Update player position if no collision detected with solid tiles
+                self.player.update_position(new_x, new_y)
+            else:
+                # If there's a collision, we don't move the player.
+                # Advanced collision handling (like sliding or bouncing) would go here.
+
+                # Example simple reaction: stop the player's movement
+                # This is a placeholder. Real games often have more nuanced reactions.
+                pass
+
+            self.player.draw()
             pygame.display.update()
-
 

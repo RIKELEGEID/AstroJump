@@ -6,22 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9243c44f-c6da-40e0-8ef2-aebb09c4876e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/tiles/tile9.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/MainMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainMenu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/levels/level1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/levels/level1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/Player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,16 +38,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.MainMenu.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/erikd/PythonSEM/level_1_real",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.MainMenu.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/erikd/PythonSEM/level_1_real&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.main">
     <configuration name="MainMenu" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="AstroJump" />
