@@ -6,6 +6,8 @@ class Player:
     def __init__(self, x, y, width, height, screen, graphics=None):
         self.x = x
         self.y = y
+        self.initial_x = x
+        self.initial_y = y
         self.width = width
         self.height = height
         self.screen = screen
@@ -21,8 +23,6 @@ class Player:
         self.rect = pygame.Rect(x, y, width, height)
 
     def draw(self, camera):
-        """Draw the player with the camera offset applied."""
-        # Apply camera offset to the player's rectangle before drawing
         rect = camera.apply(self.rect)
         pygame.draw.rect(self.screen, player_colour, rect)
 
@@ -67,3 +67,5 @@ class Player:
         self.x = new_x
         self.y = new_y
         self.rect = pygame.Rect(new_x, new_y, self.width, self.height)
+
+

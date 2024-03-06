@@ -11,8 +11,10 @@ TILE_SIZE = 64
 jump_force = 13
 gravity = 0.7
 vertical_velocity = 0
-MAP_WIDTH = 2048
+MAP_WIDTH = 5000
 MAP_HEIGHT = 768
+PLAYER_START_X = 100
+PLAYER_START_Y = 100
 
 
 

@@ -12,7 +12,7 @@ class Game:
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
 
-        num_tiles = 13
+        num_tiles = 14
         self.tile_images = [pygame.image.load(f'Graphics/tiles/{i}.png') for i in range(num_tiles)]
 
         # colors
@@ -24,6 +24,9 @@ class Game:
         # player
         self.player = Player(100, 100, 50, 50, self.screen)
         self.initial_player_position = (self.player.x, self.player.y)
+
+        # camera
+        self.camera = Camera(MAP_WIDTH, MAP_HEIGHT)
 
         # fonts
         self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 36)
@@ -274,7 +277,30 @@ class Game:
 
             pygame.display.update()
 
+    # todo: figure out how to create a working respawn function instead of just a position reset when the player falls bellow y:700
+    def respawn(self):
+        # respawn_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 200, button_width, button_height)
+        # mx, my = pygame.mouse.get_pos()
+
+        if self.player.y > 700:
+            self.player.x = self.player.initial_x
+            self.player.y = self.player.initial_y
+            self.player.vertical_velocity = 0
+            self.player.is_jumping = False
+
+            # respawn_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
+            # self.screen.blit(respawn_bg, (0, 0))
+            # pygame.draw.rect(self.screen, self.button_color, respawn_button)
+            # self.draw_text("Respawn", self.font_custom, self.white, respawn_button.centerx, respawn_button.centery)
+
+        # if respawn_button.collidepoint((mx, my)):
+        # if pygame.mouse.get_pressed()[0]:
+        # self.button_sound.play()
+        # self.main_menu()
+
     def show_map(self, map_filename=None):
+
+        non_coll_tiles = [0, 14]
         if map_filename is None:
             map_filename = "levels/level1.csv"
 
@@ -290,7 +316,9 @@ class Game:
         self.camera = Camera(MAP_WIDTH, MAP_HEIGHT)
 
         while True:
+            # respawn_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
             self.screen.fill((4, 0, 17))
+            self.respawn()
 
             # Handle events
             for event in pygame.event.get():
@@ -305,12 +333,11 @@ class Game:
                 self.player.is_jumping = True
 
             new_x, new_y = self.player.calculate_new_position()
-            self.camera.update(self.player)
 
             # Horizontal Collision Check
             for row_index, row in enumerate(game_map):
                 for col_index, tile_id in enumerate(row):
-                    if tile_id != 0:
+                    if tile_id not in non_coll_tiles:
                         tile_rect = pygame.Rect(col_index * tile_size, row_index * tile_size, tile_size, tile_size)
                         player_rect = pygame.Rect(new_x, self.player.y, self.player.width,
                                                   self.player.height)  # Check horizontal movement first
@@ -324,7 +351,7 @@ class Game:
             # Vertical Collision Check
             for row_index, row in enumerate(game_map):
                 for col_index, tile_id in enumerate(row):
-                    if tile_id != 0:
+                    if tile_id not in non_coll_tiles:
                         tile_rect = pygame.Rect(col_index * tile_size, row_index * tile_size, tile_size, tile_size)
                         player_rect = pygame.Rect(self.player.x, new_y, self.player.width, self.player.height)
 
@@ -342,7 +369,7 @@ class Game:
 
             for row_index, row in enumerate(game_map):
                 for col_index, tile_id in enumerate(row):
-                    if tile_id != 0:
+                    if tile_id not in non_coll_tiles:
                         tile_image = self.tile_images[tile_id]
                         tile_rect = pygame.Rect(col_index * TILE_SIZE, row_index * TILE_SIZE, TILE_SIZE, TILE_SIZE)
                         self.screen.blit(tile_image, self.camera.apply(tile_rect))
