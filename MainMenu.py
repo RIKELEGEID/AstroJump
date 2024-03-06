@@ -275,20 +275,20 @@ class Game:
 
     def show_map(self, map_filename=None):
         if map_filename is None:
-            map_filename = "levels/level1.csv"  # Default level if none provided
+            map_filename = "levels/level1.csv"
 
-        # Load the map from the CSV file
+            # Load the map from the CSV file
         game_map = []
         with open(map_filename, 'r') as file:
             reader = csv.reader(file)
             for row in reader:
                 game_map.append([int(tile_id) for tile_id in row])
 
-        tile_size = 64  # Adjust based on your tileset
-        clock = pygame.time.Clock()  # To control the game's framerate
+        tile_size = 64
+        clock = pygame.time.Clock()
 
         while True:
-            self.screen.fill((4, 0, 17))  # Clear the screen with a background color
+            self.screen.fill((4, 0, 17))
 
             # Handle events
             for event in pygame.event.get():
@@ -300,9 +300,8 @@ class Game:
             # Apply gravity
             if not self.player.is_jumping or self.player.vertical_velocity > 0:
                 self.player.vertical_velocity += self.player.gravity
-                self.player.is_jumping = True  # Assume we're in the air until proven otherwise
+                self.player.is_jumping = True
 
-            # Predict the new position based on current velocity and gravity
             new_x, new_y = self.player.calculate_new_position()
 
             # Horizontal Collision Check
@@ -335,7 +334,6 @@ class Game:
                                 new_y = tile_rect.bottom
                                 self.player.vertical_velocity = 0
 
-            # Update the player's position
             self.player.update_position(new_x, new_y)
 
             # Drawing the map and the player
@@ -348,6 +346,3 @@ class Game:
             self.player.draw()
             pygame.display.update()
             clock.tick(60)
-
-
-

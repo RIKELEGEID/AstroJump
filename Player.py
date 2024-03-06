@@ -18,6 +18,7 @@ class Player:
         self.jump_force = jump_force
         self.gravity = gravity
         self.vertical_velocity = vertical_velocity
+        self.rect = pygame.Rect(x, y, width, height)
 
     def draw(self):
         rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -55,8 +56,8 @@ class Player:
         if self.is_jumping:
             new_y += self.vertical_velocity
             self.vertical_velocity += self.gravity
-            if self.vertical_velocity > 0:  # This condition ensures that we know when the player is falling
-                self.is_jumping = False  # Optionally reset jump here or upon collision detection with the ground
+            if self.vertical_velocity > 0:
+                self.is_jumping = False
 
         return new_x, new_y
 

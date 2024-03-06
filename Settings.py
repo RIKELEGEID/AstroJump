@@ -9,8 +9,10 @@ player_colour = (0, 0, 255)
 player_speed = 4
 TILE_SIZE = 64
 jump_force = 13
-gravity = 0.5
+gravity = 1
 vertical_velocity = 0
+MAP_WIDTH = 2048
+MAP_HEIGHT = 768
 
 
 
