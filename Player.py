@@ -1,5 +1,6 @@
 import pygame
-from Settings import player_colour, player_speed
+from Settings import player_colour, player_speed, jump_force, gravity, vertical_velocity
+
 
 class Player:
     def __init__(self, x, y, width, height, screen, graphics=None):
@@ -13,13 +14,10 @@ class Player:
         self.move_left = False
         self.move_right = False
         self.move_up = False
-        self.move_down = False
         self.is_jumping = False
-        self.jump_count = 0
-        self.max_jump_count = 10  # Adjust as needed
-
-        # Gravity attributes
-        self.gravity = 1
+        self.jump_force = jump_force
+        self.gravity = gravity
+        self.vertical_velocity = vertical_velocity
 
     def draw(self):
         rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -31,23 +29,19 @@ class Player:
                 self.move_left = True
             if event.key == pygame.K_d:
                 self.move_right = True
-            if event.key == pygame.K_w:
-                self.move_up = True
-            if event.key == pygame.K_s:
-                self.move_down = True
+            if event.key == pygame.K_SPACE:
+                if not self.is_jumping:
+                    self.is_jumping = True
+                    self.vertical_velocity = -self.jump_force
 
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 self.move_left = False
             if event.key == pygame.K_d:
                 self.move_right = False
-            if event.key == pygame.K_w:
-                self.move_up = False
-            if event.key == pygame.K_s:
-                self.move_down = False
 
     def is_moving(self):
-        return self.move_left or self.move_right or self.move_up or self.move_down
+        return self.move_left or self.move_right or self.is_jumping
 
     def calculate_new_position(self):
         new_x = self.x
@@ -57,19 +51,15 @@ class Player:
             new_x -= self.speed
         if self.move_right:
             new_x += self.speed
-        if self.move_up:
-            new_y -= self.speed
-        if self.move_down:
-            new_y += self.speed
+
+        if self.is_jumping:
+            new_y += self.vertical_velocity
+            self.vertical_velocity += self.gravity
+            if self.vertical_velocity > 0:  # This condition ensures that we know when the player is falling
+                self.is_jumping = False  # Optionally reset jump here or upon collision detection with the ground
 
         return new_x, new_y
 
     def update_position(self, new_x, new_y):
         self.x = new_x
         self.y = new_y
-
-    def move(self):
-        new_x, new_y = self.calculate_new_position()
-        # Update the position directly in the move method is no longer recommended
-        # Instead, use `calculate_new_position` to get the desired position
-        # and `update_position` to actually update after collision checks.

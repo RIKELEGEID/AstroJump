@@ -274,69 +274,80 @@ class Game:
             pygame.display.update()
 
     def show_map(self, map_filename=None):
+        if map_filename is None:
+            map_filename = "levels/level1.csv"  # Default level if none provided
+
+        # Load the map from the CSV file
+        game_map = []
+        with open(map_filename, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                game_map.append([int(tile_id) for tile_id in row])
+
+        tile_size = 64  # Adjust based on your tileset
+        clock = pygame.time.Clock()  # To control the game's framerate
+
         while True:
             self.screen.fill((4, 0, 17))  # Clear the screen with a background color
-            if map_filename is None:
-                map_filename = "levels/level1.csv"  # Default level if none provided
 
-            # Load the map from the CSV file
-            game_map = []
-            with open(map_filename, 'r') as file:
-                reader = csv.reader(file)
-                for row in reader:
-                    game_map.append([int(tile_id) for tile_id in row])
-
-            tile_size = 64  # Size of tiles, adjust based on your tileset
-            collision = False  # Flag to detect collision
-
-            # Draw tiles and check for collisions
-            for row_index, row in enumerate(game_map):
-                for col_index, tile_id in enumerate(row):
-                    if tile_id != 0:  # Skip drawing and collision check for tiles with ID 0
-                        tile_image = self.tile_images[tile_id]
-                        tile_rect = tile_image.get_rect(topleft=(col_index * tile_size, row_index * tile_size))
-                        self.screen.blit(tile_image, tile_rect)
-
-                        player_rect = pygame.Rect(self.player.x, self.player.y, self.player.width, self.player.height)
-                        if player_rect.colliderect(tile_rect):
-                            collision = True  # Collision detected
-                            break
-                if collision:
-                    break
-
-            # Event handling
+            # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 self.player.handle_event(event)
 
-            # Calculate new player position based on current inputs
-            new_x, new_y = self.player.calculate_new_position()
-            player_rect = pygame.Rect(new_x, new_y, self.player.width, self.player.height)
+            # Apply gravity
+            if not self.player.is_jumping or self.player.vertical_velocity > 0:
+                self.player.vertical_velocity += self.player.gravity
+                self.player.is_jumping = True  # Assume we're in the air until proven otherwise
 
-            # Re-check for collisions with the new position
+            # Predict the new position based on current velocity and gravity
+            new_x, new_y = self.player.calculate_new_position()
+
+            # Horizontal Collision Check
             for row_index, row in enumerate(game_map):
                 for col_index, tile_id in enumerate(row):
                     if tile_id != 0:
                         tile_rect = pygame.Rect(col_index * tile_size, row_index * tile_size, tile_size, tile_size)
+                        player_rect = pygame.Rect(new_x, self.player.y, self.player.width,
+                                                  self.player.height)  # Check horizontal movement first
+
                         if player_rect.colliderect(tile_rect):
-                            collision = True
-                            break
-                if collision:
-                    break
+                            if new_x > self.player.x:  # Moving right
+                                new_x = tile_rect.left - self.player.width
+                            elif new_x < self.player.x:  # Moving left
+                                new_x = tile_rect.right
 
-            if not collision:
-                # Update player position if no collision detected with solid tiles
-                self.player.update_position(new_x, new_y)
-            else:
-                # If there's a collision, we don't move the player.
-                # Advanced collision handling (like sliding or bouncing) would go here.
+            # Vertical Collision Check
+            for row_index, row in enumerate(game_map):
+                for col_index, tile_id in enumerate(row):
+                    if tile_id != 0:
+                        tile_rect = pygame.Rect(col_index * tile_size, row_index * tile_size, tile_size, tile_size)
+                        player_rect = pygame.Rect(self.player.x, new_y, self.player.width, self.player.height)
 
-                # Example simple reaction: stop the player's movement
-                # This is a placeholder. Real games often have more nuanced reactions.
-                pass
+                        if player_rect.colliderect(tile_rect):
+                            if new_y > self.player.y:  # Falling down
+                                new_y = tile_rect.top - self.player.height
+                                self.player.vertical_velocity = 0
+                                self.player.is_jumping = False
+                            elif new_y < self.player.y:  # Jumping up
+                                new_y = tile_rect.bottom
+                                self.player.vertical_velocity = 0
+
+            # Update the player's position
+            self.player.update_position(new_x, new_y)
+
+            # Drawing the map and the player
+            for row_index, row in enumerate(game_map):
+                for col_index, tile_id in enumerate(row):
+                    if tile_id != 0:  # If not an empty tile
+                        tile_image = self.tile_images[tile_id]
+                        self.screen.blit(tile_image, (col_index * tile_size, row_index * tile_size))
 
             self.player.draw()
             pygame.display.update()
+            clock.tick(60)
+
+
 
