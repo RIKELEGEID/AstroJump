@@ -1,5 +1,5 @@
 import pygame
-from Settings import player_colour, player_speed, jump_force, gravity, vertical_velocity
+from settings import player_colour, player_speed, jump_force, gravity, vertical_velocity
 
 
 class Player:
@@ -20,8 +20,10 @@ class Player:
         self.vertical_velocity = vertical_velocity
         self.rect = pygame.Rect(x, y, width, height)
 
-    def draw(self):
-        rect = pygame.Rect(self.x, self.y, self.width, self.height)
+    def draw(self, camera):
+        """Draw the player with the camera offset applied."""
+        # Apply camera offset to the player's rectangle before drawing
+        rect = camera.apply(self.rect)
         pygame.draw.rect(self.screen, player_colour, rect)
 
     def handle_event(self, event):
@@ -64,3 +66,4 @@ class Player:
     def update_position(self, new_x, new_y):
         self.x = new_x
         self.y = new_y
+        self.rect = pygame.Rect(new_x, new_y, self.width, self.height)

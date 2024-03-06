@@ -1,6 +1,6 @@
 import pygame
-from Settings import WINDOW_WIDTH, WINDOW_HEIGHT
-from MainMenu import Game
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from game import Game
 
 
 class Main:

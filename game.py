@@ -1,8 +1,9 @@
 import pygame
 import sys
-from Settings import *
+from settings import *
 import csv
-from Player import Player
+from player import Player
+from camera import Camera
 
 
 class Game:
@@ -286,6 +287,7 @@ class Game:
 
         tile_size = 64
         clock = pygame.time.Clock()
+        self.camera = Camera(MAP_WIDTH, MAP_HEIGHT)
 
         while True:
             self.screen.fill((4, 0, 17))
@@ -303,6 +305,7 @@ class Game:
                 self.player.is_jumping = True
 
             new_x, new_y = self.player.calculate_new_position()
+            self.camera.update(self.player)
 
             # Horizontal Collision Check
             for row_index, row in enumerate(game_map):
@@ -335,14 +338,15 @@ class Game:
                                 self.player.vertical_velocity = 0
 
             self.player.update_position(new_x, new_y)
+            self.camera.update(self.player)
 
-            # Drawing the map and the player
             for row_index, row in enumerate(game_map):
                 for col_index, tile_id in enumerate(row):
-                    if tile_id != 0:  # If not an empty tile
+                    if tile_id != 0:
                         tile_image = self.tile_images[tile_id]
-                        self.screen.blit(tile_image, (col_index * tile_size, row_index * tile_size))
+                        tile_rect = pygame.Rect(col_index * TILE_SIZE, row_index * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+                        self.screen.blit(tile_image, self.camera.apply(tile_rect))
 
-            self.player.draw()
+            self.player.draw(self.camera)
             pygame.display.update()
             clock.tick(60)

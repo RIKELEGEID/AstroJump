@@ -1,7 +1,5 @@
 import pygame
-from Settings import WINDOW_WIDTH, WINDOW_HEIGHT
-
-# needs work
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
 
 
 class Camera:
@@ -10,12 +8,12 @@ class Camera:
         self.width = width
         self.height = height
 
-    def apply(self, entity):    
+    def apply(self, entity):
         return entity.move(self.camera.topleft)
 
     def update(self, target):
-        x = -target.rect.x + int(WINDOW_WIDTH / 2)
-        y = -target.rect.y + int(WINDOW_HEIGHT / 2)
+        x = -target.x + int(WINDOW_WIDTH / 2)
+        y = -target.y + int(WINDOW_HEIGHT / 2)
 
         # Limit scrolling to map size
         x = min(0, x)  # Left
@@ -24,5 +22,9 @@ class Camera:
         y = max(-(self.height - WINDOW_HEIGHT), y)  # Bottom
 
         self.camera = pygame.Rect(x, y, self.width, self.height)
+
+
+
+
 
 
