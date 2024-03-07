@@ -170,8 +170,9 @@ class Game:
             pygame.draw.rect(self.screen, self.button_color, page2)
 
             self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
-            self.draw_text("First text", self.font_custom, self.white, page1.centerx, page1.centery)
-            self.draw_text("Second text", self.font_custom, self.white, page2.centerx, page2.centery)
+            self.draw_text("A - move left", self.font_custom, self.white, page1.centerx, 250)
+            self.draw_text("D - move right", self.font_custom, self.white, page1.centerx, 350)
+            self.draw_text("Space - jump", self.font_custom, self.white, page1.centerx, 450)
 
             if return_button.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
@@ -314,7 +315,7 @@ class Game:
         self.camera = Camera(MAP_WIDTH, MAP_HEIGHT)
 
         while True:
-            map_bg = pygame.image.load("Graphics/backgrounds/map_bg.png").convert_alpha()
+            map_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png").convert_alpha()
             self.screen.blit(map_bg, (0, 0))
             self.respawn()
 
