@@ -6,10 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="9243c44f-c6da-40e0-8ef2-aebb09c4876e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics/tiles/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/Graphics/tiles/9.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/levels/level1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/levels/level1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

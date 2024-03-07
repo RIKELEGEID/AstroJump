@@ -277,7 +277,8 @@ class Game:
 
             pygame.display.update()
 
-    # todo: figure out how to create a working respawn function instead of just a position reset when the player falls bellow y:700
+    # todo: figure out how to create a working respawn function instead of just a position reset when the player falls
+    #  bellow y:700
     def respawn(self):
         # respawn_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 200, button_width, button_height)
         # mx, my = pygame.mouse.get_pos()
@@ -287,9 +288,6 @@ class Game:
             self.player.y = self.player.initial_y
             self.player.vertical_velocity = 0
             self.player.is_jumping = False
-
-            # respawn_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
-            # self.screen.blit(respawn_bg, (0, 0))
             # pygame.draw.rect(self.screen, self.button_color, respawn_button)
             # self.draw_text("Respawn", self.font_custom, self.white, respawn_button.centerx, respawn_button.centery)
 
@@ -316,8 +314,8 @@ class Game:
         self.camera = Camera(MAP_WIDTH, MAP_HEIGHT)
 
         while True:
-            # respawn_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
-            self.screen.fill((4, 0, 17))
+            map_bg = pygame.image.load("Graphics/backgrounds/map_bg.png").convert_alpha()
+            self.screen.blit(map_bg, (0, 0))
             self.respawn()
 
             # Handle events
