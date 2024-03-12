@@ -4,6 +4,7 @@ from settings import *
 import csv
 from player import Player
 from camera import Camera
+from slider import Slider
 
 
 class Game:
@@ -27,6 +28,10 @@ class Game:
 
         # camera
         self.camera = Camera(MAP_WIDTH, MAP_HEIGHT)
+
+        # sliders
+        self.sfx_slider = Slider(810, 400, 300, 40, 0, 1, 0.5)
+        self.music_slider = Slider(810, 500, 300, 40, 0, 1, 0.5)
 
         # fonts
         self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 50)
@@ -108,7 +113,8 @@ class Game:
             mx, my = pygame.mouse.get_pos()
 
             return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 800, button_width, button_height)
-            level1 = pygame.Rect((WINDOW_WIDTH - 3 * button_width - 2 * button_gap) // 2, 250, button_width, button_height)
+            level1 = pygame.Rect((WINDOW_WIDTH - 3 * button_width - 2 * button_gap) // 2, 250, button_width,
+                                 button_height)
             level2 = pygame.Rect(level1.right + button_gap, 250, button_width, button_height)
             level3 = pygame.Rect(level2.right + button_gap, 250, button_width, button_height)
 
@@ -192,87 +198,34 @@ class Game:
             mx, my = pygame.mouse.get_pos()
 
             return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 900, button_width, button_height)
-            sfx_vol1 = pygame.Rect(450, 400, button_width, button_height)
-            sfx_vol2 = pygame.Rect(450, 500, button_width, button_height)
-            sfx_vol3 = pygame.Rect(450, 600, button_width, button_height)
-            sfx_vol4 = pygame.Rect(450, 700, button_width, button_height)
-            music_vol1 = pygame.Rect(1210, 400, button_width, button_height)
-            music_vol2 = pygame.Rect(1210, 500, button_width, button_height)
-            music_vol3 = pygame.Rect(1210, 600, button_width, button_height)
-            music_vol4 = pygame.Rect(1210, 700, button_width, button_height)
 
             pygame.draw.rect(self.screen, self.button_color, return_button)
-            pygame.draw.rect(self.screen, self.button_color, sfx_vol1)
-            pygame.draw.rect(self.screen, self.button_color, sfx_vol2)
-            pygame.draw.rect(self.screen, self.button_color, sfx_vol3)
-            pygame.draw.rect(self.screen, self.button_color, sfx_vol4)
-            pygame.draw.rect(self.screen, self.button_color, music_vol1)
-            pygame.draw.rect(self.screen, self.button_color, music_vol2)
-            pygame.draw.rect(self.screen, self.button_color, music_vol3)
-            pygame.draw.rect(self.screen, self.button_color, music_vol4)
 
             self.draw_text("Settings", self.font_custom, self.white, WINDOW_WIDTH // 2, 175)
-            self.draw_text("SFX volume", self.font_custom, self.white, sfx_vol1.centerx, 300)
-            self.draw_text("Music volume", self.font_custom, self.white, music_vol1.centerx, 300)
+            # self.draw_text("SFX volume", self.font_custom, self.white, sfx_vol1.centerx, 300)
+            # self.draw_text("Music volume", self.font_custom, self.white, music_vol1.centerx, 300)
             self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
-            self.draw_text("4", self.font_custom, self.white, sfx_vol1.centerx, sfx_vol1.centery)
-            self.draw_text("3", self.font_custom, self.white, sfx_vol2.centerx, sfx_vol2.centery)
-            self.draw_text("2", self.font_custom, self.white, sfx_vol3.centerx, sfx_vol3.centery)
-            self.draw_text("1", self.font_custom, self.white, sfx_vol4.centerx, sfx_vol4.centery)
-            self.draw_text("4", self.font_custom, self.white, music_vol1.centerx, music_vol1.centery)
-            self.draw_text("3", self.font_custom, self.white, music_vol2.centerx, music_vol2.centery)
-            self.draw_text("2", self.font_custom, self.white, music_vol3.centerx, music_vol3.centery)
-            self.draw_text("1", self.font_custom, self.white, music_vol4.centerx, music_vol4.centery)
 
-            if sfx_vol1.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    self.button_sound.set_volume(1)
-
-            if sfx_vol2.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    self.button_sound.set_volume(0.7)
-
-            if sfx_vol3.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    self.button_sound.set_volume(0.4)
-
-            if sfx_vol4.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    self.button_sound.set_volume(0.2)
-
-            if music_vol1.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    pygame.mixer.music.set_volume(1)
-
-            if music_vol2.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    pygame.mixer.music.set_volume(0.6)
-
-            if music_vol3.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    pygame.mixer.music.set_volume(0.3)
-
-            if music_vol4.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    pygame.mixer.music.set_volume(0.05)
-
-            if return_button.collidepoint((mx, my)):
-                if pygame.mouse.get_pressed()[0]:
-                    self.button_sound.play()
-                    return
+            self.sfx_slider.draw(self.screen)
+            self.music_slider.draw(self.screen)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+                self.sfx_slider.handle_event(event, mx, my)
+                self.music_slider.handle_event(event, mx, my)
+
+                # Update volumes based on slider values
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.button_sound.set_volume(self.sfx_slider.value)
+                    pygame.mixer.music.set_volume(self.music_slider.value)
+
+                if return_button.collidepoint((mx, my)):
+                    if pygame.mouse.get_pressed()[0]:
+                        self.button_sound.play()
+                        return
 
             pygame.display.update()
 

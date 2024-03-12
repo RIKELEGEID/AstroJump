@@ -1,12 +1,11 @@
 import pygame
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT
 from game import Game
 
 
 class Main:
     def __init__(self):
         pygame.init()
-        self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.FULLSCREEN)
+        self.display_surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.game = Game()
 
