@@ -1,7 +1,7 @@
 WINDOW_WIDTH = 1920
 WINDOW_HEIGHT = 1080
-button_width = 200
-button_height = 50
+button_width = 260
+button_height = 75
 button_gap = 50
 player_colour = (0, 0, 255)
 player_speed = 6

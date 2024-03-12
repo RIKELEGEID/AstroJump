@@ -29,11 +29,11 @@ class Game:
         self.camera = Camera(MAP_WIDTH, MAP_HEIGHT)
 
         # fonts
-        self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 36)
+        self.font_custom = pygame.font.Font("Graphics/fonts/pixel_font.ttf", 50)
 
         # sounds
         self.button_sound = pygame.mixer.Sound("Sounds/button_sound3.mp3")
-        self.bg_music = "Sounds/BG_music.mp3"
+        self.bg_music = "Sounds/BG_music2.mp3"
         pygame.mixer.music.load(self.bg_music)
         pygame.mixer.music.play(-1)
 
@@ -53,14 +53,14 @@ class Game:
             bg = pygame.image.load("Graphics/backgrounds/BG.png")
             self.screen.blit(bg, (0, 0))
 
-            self.draw_text("Astro Jump", self.font_custom, self.white, WINDOW_WIDTH // 2, 200)
+            self.draw_text("Astro Jump", self.font_custom, self.white, WINDOW_WIDTH // 2, 300)
 
             mx, my = pygame.mouse.get_pos()
 
-            button_play = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 300, button_width, button_height)
-            button_tutorial = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 400, button_width, button_height)
-            button_settings = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 500, button_width, button_height)
-            button_quit = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 600, button_width, button_height)
+            button_play = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 400, button_width, button_height)
+            button_tutorial = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 500, button_width, button_height)
+            button_settings = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 600, button_width, button_height)
+            button_quit = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 700, button_width, button_height)
 
             play_hovered = button_play.collidepoint((mx, my))
             tutorial_hovered = button_tutorial.collidepoint((mx, my))
@@ -103,15 +103,14 @@ class Game:
             level_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
             self.screen.blit(level_bg, (0, 0))
 
-            self.draw_text("Select a Level", self.font_custom, self.white, WINDOW_WIDTH // 2, 100)
+            self.draw_text("Select a Level", self.font_custom, self.white, WINDOW_WIDTH // 2, 175)
 
             mx, my = pygame.mouse.get_pos()
 
-            return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 700, button_width, button_height)
-            level1 = pygame.Rect((WINDOW_WIDTH - 3 * button_width - 2 * button_gap) // 2, 200, button_width,
-                                 button_height)
-            level2 = pygame.Rect(level1.right + button_gap, 200, button_width, button_height)
-            level3 = pygame.Rect(level2.right + button_gap, 200, button_width, button_height)
+            return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 800, button_width, button_height)
+            level1 = pygame.Rect((WINDOW_WIDTH - 3 * button_width - 2 * button_gap) // 2, 250, button_width, button_height)
+            level2 = pygame.Rect(level1.right + button_gap, 250, button_width, button_height)
+            level3 = pygame.Rect(level2.right + button_gap, 250, button_width, button_height)
 
             pygame.draw.rect(self.screen, self.button_color, return_button)
             pygame.draw.rect(self.screen, self.button_color, level1)
@@ -157,22 +156,21 @@ class Game:
             tutorial_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png")
             self.screen.blit(tutorial_bg, (0, 0))
 
-            self.draw_text("Tutorial", self.font_custom, self.white, WINDOW_WIDTH // 2, 100)
-
             mx, my = pygame.mouse.get_pos()
 
-            return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 700, button_width, button_height)
-            page1 = pygame.Rect(100, 200, 500, 400)
-            page2 = pygame.Rect(700, 200, 500, 400)
+            return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 900, button_width, button_height)
+            page1 = pygame.Rect(250, 300, 500, 400)
+            page2 = pygame.Rect(1170, 300, 500, 400)
 
             pygame.draw.rect(self.screen, self.button_color, return_button)
             pygame.draw.rect(self.screen, self.button_color, page1)
             pygame.draw.rect(self.screen, self.button_color, page2)
 
+            self.draw_text("Tutorial", self.font_custom, self.white, WINDOW_WIDTH // 2, 175)
             self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
-            self.draw_text("A - move left", self.font_custom, self.white, page1.centerx, 250)
-            self.draw_text("D - move right", self.font_custom, self.white, page1.centerx, 350)
-            self.draw_text("Space - jump", self.font_custom, self.white, page1.centerx, 450)
+            self.draw_text("A - move left", self.font_custom, self.white, page1.centerx, 350)
+            self.draw_text("D - move right", self.font_custom, self.white, page1.centerx, 450)
+            self.draw_text("Space - jump", self.font_custom, self.white, page1.centerx, 550)
 
             if return_button.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
@@ -193,15 +191,15 @@ class Game:
 
             mx, my = pygame.mouse.get_pos()
 
-            return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 700, button_width, button_height)
-            sfx_vol1 = pygame.Rect(200, 300, button_width, button_height)
-            sfx_vol2 = pygame.Rect(200, 400, button_width, button_height)
-            sfx_vol3 = pygame.Rect(200, 500, button_width, button_height)
-            sfx_vol4 = pygame.Rect(200, 600, button_width, button_height)
-            music_vol1 = pygame.Rect(900, 300, button_width, button_height)
-            music_vol2 = pygame.Rect(900, 400, button_width, button_height)
-            music_vol3 = pygame.Rect(900, 500, button_width, button_height)
-            music_vol4 = pygame.Rect(900, 600, button_width, button_height)
+            return_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 900, button_width, button_height)
+            sfx_vol1 = pygame.Rect(450, 400, button_width, button_height)
+            sfx_vol2 = pygame.Rect(450, 500, button_width, button_height)
+            sfx_vol3 = pygame.Rect(450, 600, button_width, button_height)
+            sfx_vol4 = pygame.Rect(450, 700, button_width, button_height)
+            music_vol1 = pygame.Rect(1210, 400, button_width, button_height)
+            music_vol2 = pygame.Rect(1210, 500, button_width, button_height)
+            music_vol3 = pygame.Rect(1210, 600, button_width, button_height)
+            music_vol4 = pygame.Rect(1210, 700, button_width, button_height)
 
             pygame.draw.rect(self.screen, self.button_color, return_button)
             pygame.draw.rect(self.screen, self.button_color, sfx_vol1)
@@ -213,9 +211,9 @@ class Game:
             pygame.draw.rect(self.screen, self.button_color, music_vol3)
             pygame.draw.rect(self.screen, self.button_color, music_vol4)
 
-            self.draw_text("Settings", self.font_custom, self.white, WINDOW_WIDTH // 2, 100)
-            self.draw_text("SFX volume", self.font_custom, self.white, 300, 200)
-            self.draw_text("Music volume", self.font_custom, self.white, 1000, 200)
+            self.draw_text("Settings", self.font_custom, self.white, WINDOW_WIDTH // 2, 175)
+            self.draw_text("SFX volume", self.font_custom, self.white, sfx_vol1.centerx, 300)
+            self.draw_text("Music volume", self.font_custom, self.white, music_vol1.centerx, 300)
             self.draw_text("Return", self.font_custom, self.white, return_button.centerx, return_button.centery)
             self.draw_text("4", self.font_custom, self.white, sfx_vol1.centerx, sfx_vol1.centery)
             self.draw_text("3", self.font_custom, self.white, sfx_vol2.centerx, sfx_vol2.centery)
@@ -284,7 +282,7 @@ class Game:
         # respawn_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 200, button_width, button_height)
         # mx, my = pygame.mouse.get_pos()
 
-        if self.player.y > 700:
+        if self.player.y > 1800:
             self.player.x = self.player.initial_x
             self.player.y = self.player.initial_y
             self.player.vertical_velocity = 0
