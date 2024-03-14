@@ -20,7 +20,7 @@ class Game:
         self.white = (255, 255, 255)
         self.button_color = (50, 50, 50)
         self.quit_button_color = (125, 50, 50)
-        self.quit_button_hover_color = (200 , 50, 50)
+        self.quit_button_hover_color = (200, 50, 50)
         self.hover_color = (100, 100, 100)
 
         # player
@@ -230,24 +230,37 @@ class Game:
 
             pygame.display.update()
 
-    # todo: figure out how to create a working respawn function instead of just a position reset when the player falls
-    #  bellow y:700
     def respawn(self):
-        # respawn_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 200, button_width, button_height)
-        # mx, my = pygame.mouse.get_pos()
+        main_menu_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2 - 20, 500, 300, button_height)
+        respawn_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 400, button_width, button_height)
+
+        mx, my = pygame.mouse.get_pos()
+        main_menu_hovered = main_menu_button.collidepoint((mx, my))
+        respawn_hovered = respawn_button.collidepoint((mx, my))
 
         if self.player.y > 1800:
-            self.player.x = self.player.initial_x
-            self.player.y = self.player.initial_y
-            self.player.vertical_velocity = 0
-            self.player.is_jumping = False
-            # pygame.draw.rect(self.screen, selqf.button_color, respawn_button)
-            # self.draw_text("Respawn", self.font_custom, self.white, respawn_button.centerx, respawn_button.centery)
+            self.screen.fill((0, 0, 0))
+            self.draw_text("You fell into the abyss", self.font_custom, self.quit_button_color, WINDOW_WIDTH // 2, 175)
+            self.draw_button("Main menu", main_menu_button, self.hover_color if main_menu_hovered else self.button_color)
+            self.draw_button("Respawn", respawn_button, self.hover_color if respawn_hovered else self.button_color)
 
-        # if respawn_button.collidepoint((mx, my)):
-        # if pygame.mouse.get_pressed()[0]:
-        # self.button_sound.play()
-        # self.main_menu()
+            if respawn_button.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.player.x = self.player.initial_x
+                    self.player.y = self.player.initial_y
+                    self.player.vertical_velocity = 0
+                    self.player.is_jumping = False
+                    self.button_sound.play()
+
+            if main_menu_button.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.player.x = self.player.initial_x
+                    self.player.y = self.player.initial_y
+                    self.player.vertical_velocity = 0
+                    self.player.is_jumping = False
+                    self.button_sound.play()
+                    self.main_menu()
+                    return
 
     def show_map(self, map_filename=None):
 
@@ -269,7 +282,6 @@ class Game:
         while True:
             map_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png").convert_alpha()
             self.screen.blit(map_bg, (0, 0))
-            self.respawn()
 
             # Handle events
             for event in pygame.event.get():
@@ -325,6 +337,7 @@ class Game:
                         tile_rect = pygame.Rect(col_index * TILE_SIZE, row_index * TILE_SIZE, TILE_SIZE, TILE_SIZE)
                         self.screen.blit(tile_image, self.camera.apply(tile_rect))
 
+            self.respawn()
             self.player.draw(self.camera)
             pygame.display.update()
             clock.tick(60)
