@@ -155,6 +155,10 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return
 
             pygame.display.update()
 
@@ -190,6 +194,10 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return
 
             pygame.display.update()
 
@@ -228,6 +236,10 @@ class Game:
                         self.button_sound.play()
                         return
 
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return
+
             pygame.display.update()
 
     def respawn(self):
@@ -262,6 +274,38 @@ class Game:
                     self.main_menu()
                     return
 
+    def game_menu(self):
+
+        while True:
+            mx, my = pygame.mouse.get_pos()
+
+            resume_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 400, button_width, button_height)
+            quit_button = pygame.Rect(WINDOW_WIDTH // 2 - button_width // 2, 600, button_width, button_height)
+
+            resume_hovered = resume_button.collidepoint((mx, my))
+            quit_hovered = quit_button.collidepoint((mx, my))
+
+            self.screen.fill((0, 0, 0))
+            self.draw_button("Resume", resume_button, self.hover_color if resume_hovered else self.button_color)
+            self.draw_button("Quit", quit_button, self.quit_button_hover_color if quit_hovered else self.button_color)
+
+            if resume_button.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    return
+
+            if quit_button.collidepoint((mx, my)):
+                if pygame.mouse.get_pressed()[0]:
+                    self.button_sound.play()
+                    self.main_menu()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            pygame.display.update()
+
     def show_map(self, map_filename=None):
 
         non_coll_tiles = [0, 14]
@@ -289,6 +333,9 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 self.player.handle_event(event)
+
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.game_menu()
 
             # Apply gravity
             if not self.player.is_jumping or self.player.vertical_velocity > 0:
