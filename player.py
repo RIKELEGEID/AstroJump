@@ -17,6 +17,7 @@ class Player:
         self.move_right = False
         self.move_up = False
         self.is_jumping = False
+        self.can_jump = True
         self.jump_force = jump_force
         self.gravity = gravity
         self.vertical_velocity = vertical_velocity
@@ -33,8 +34,9 @@ class Player:
             if event.key == pygame.K_d:
                 self.move_right = True
             if event.key == pygame.K_SPACE:
-                if not self.is_jumping:
+                if not self.is_jumping and self.can_jump:
                     self.is_jumping = True
+                    self.can_jump = False
                     self.vertical_velocity = -self.jump_force
 
         elif event.type == pygame.KEYUP:

@@ -287,7 +287,7 @@ class Game:
 
             self.screen.fill((0, 0, 0))
             self.draw_button("Resume", resume_button, self.hover_color if resume_hovered else self.button_color)
-            self.draw_button("Quit", quit_button, self.quit_button_hover_color if quit_hovered else self.button_color)
+            self.draw_button("Quit", quit_button, self.quit_button_hover_color if quit_hovered else self.quit_button_color)
 
             if resume_button.collidepoint((mx, my)):
                 if pygame.mouse.get_pressed()[0]:
@@ -370,6 +370,7 @@ class Game:
                                 new_y = tile_rect.top - self.player.height
                                 self.player.vertical_velocity = 0
                                 self.player.is_jumping = False
+                                self.player.can_jump = True
                             elif new_y < self.player.y:  # Jumping up
                                 new_y = tile_rect.bottom
                                 self.player.vertical_velocity = 0
