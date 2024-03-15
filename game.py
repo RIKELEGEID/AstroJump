@@ -7,6 +7,7 @@ from camera import Camera
 from slider import Slider
 
 
+
 class Game:
     def __init__(self):
         pygame.init()

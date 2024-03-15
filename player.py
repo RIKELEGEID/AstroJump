@@ -1,11 +1,20 @@
 import pygame
-from settings import player_colour, player_speed, jump_force, gravity, vertical_velocity
+from settings import player_speed, jump_force, gravity, vertical_velocity
 
 
 class Player:
     def __init__(self, x, y, width, height, screen, graphics=None):
+        super().__init__()
         self.x = x
         self.y = y
+        self.animations = {
+            'idle_left': [],
+        }
+        self.load_images()
+        self.state = 'idle_left'  # The initial state
+        self.current_frame = 0
+        self.image = self.animations[self.state][self.current_frame]
+        self.rect = self.image.get_rect(topleft=(x, y))
         self.initial_x = x
         self.initial_y = y
         self.width = width
@@ -23,14 +32,27 @@ class Player:
         self.vertical_velocity = vertical_velocity
         self.rect = pygame.Rect(x, y, width, height)
 
+    def load_images(self):
+        # Load idle_left animation images
+        for i in range(1, 12):
+            image_path = f'Graphics/player/idle_left/player-1-{i}.png'
+            image = pygame.image.load(image_path).convert_alpha()
+            self.animations['idle_left'].append(image)
+
+    def animate(self, dt):
+        self.current_frame += 3 * dt  # Animation speed control
+        if self.current_frame >= len(self.animations[self.state]):
+            self.current_frame = 0
+        self.image = self.animations[self.state][int(self.current_frame)]
+
     def draw(self, camera):
-        rect = camera.apply(self.rect)
-        pygame.draw.rect(self.screen, player_colour, rect)
+        self.screen.blit(self.image, camera.apply(self.rect))
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 self.move_left = True
+                self.state = "idle_left"
             if event.key == pygame.K_d:
                 self.move_right = True
             if event.key == pygame.K_SPACE:
