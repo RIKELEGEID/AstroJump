@@ -13,8 +13,6 @@ class Game:
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
 
-
-        # todo: resize portal graphic to fit 64 by 64
         num_tiles = 15
         self.tile_images = [pygame.image.load(f'Graphics/tiles/{i}.png') for i in range(num_tiles)]
 
@@ -328,6 +326,7 @@ class Game:
         while True:
             map_bg = pygame.image.load("Graphics/backgrounds/Level_BG.png").convert_alpha()
             self.screen.blit(map_bg, (0, 0))
+            self.player.update_animation()
 
             # Handle events
             for event in pygame.event.get():

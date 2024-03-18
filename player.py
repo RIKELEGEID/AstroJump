@@ -1,5 +1,6 @@
 import pygame
-from settings import player_colour, player_speed, jump_force, gravity, vertical_velocity
+from settings import player_speed, jump_force, gravity, vertical_velocity
+from animation import load_images, Animation
 
 
 class Player:
@@ -22,10 +23,28 @@ class Player:
         self.gravity = gravity
         self.vertical_velocity = vertical_velocity
         self.rect = pygame.Rect(x, y, width, height)
+        self.assets = {
+            "player_idle": Animation(load_images("Idle_right"), img_dur=10),
+            "player_jump": Animation(load_images("Jump_right")),
+            # "player_run": Animation(load_images("Graphics/player/run"), img_dur=4)
+        }
+        self.current_animation = 'player_idle'
+
+    def update_animation(self):
+        if self.is_jumping:
+            self.current_animation = 'player_jump'
+        # elif self.move_left or self.move_right:
+        # self.current_animation = 'player_run'
+        else:
+            self.current_animation = 'player_idle'
 
     def draw(self, camera):
+        current_animation = self.assets[self.current_animation]  # Access the current animation
+        current_animation.update()  # Update the animation frame
+        current_frame = current_animation.img()  # Get the current frame
+
         rect = camera.apply(self.rect)
-        pygame.draw.rect(self.screen, player_colour, rect)
+        self.screen.blit(current_frame, rect.topleft)
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
