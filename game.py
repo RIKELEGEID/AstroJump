@@ -7,22 +7,23 @@ from camera import Camera
 from slider import Slider
 
 
-
 class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("AstroJump")
 
-        num_tiles = 14
+
+        # todo: resize portal graphic to fit 64 by 64
+        num_tiles = 15
         self.tile_images = [pygame.image.load(f'Graphics/tiles/{i}.png') for i in range(num_tiles)]
 
         # colors
         self.white = (255, 255, 255)
-        self.button_color = (50, 50, 50)
+        self.button_color = (0, 7, 78)
         self.quit_button_color = (125, 50, 50)
         self.quit_button_hover_color = (200, 50, 50)
-        self.hover_color = (100, 100, 100)
+        self.hover_color = (0, 50, 125)
 
         # player
         self.player = Player(100, 100, 50, 50, self.screen)
@@ -156,7 +157,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         return
@@ -309,7 +310,7 @@ class Game:
 
     def show_map(self, map_filename=None):
 
-        non_coll_tiles = [0, 14]
+        non_coll_tiles = [0]
         if map_filename is None:
             map_filename = "levels/level1.csv"
 
