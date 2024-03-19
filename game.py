@@ -274,7 +274,8 @@ class Game:
                     self.main_menu()
                     return
 
-    def game_menu(self):
+    # todo: it should be a game_menu_loop class
+    def create_game_menu(self):
 
         while True:
             mx, my = pygame.mouse.get_pos()
@@ -330,20 +331,10 @@ class Game:
 
             # Handle events
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                self.player.handle_event(event)
-
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    self.game_menu()
+                self.handle_event(event)
 
             # Apply gravity
-            if not self.player.is_jumping or self.player.vertical_velocity > 0:
-                self.player.vertical_velocity += self.player.gravity
-                self.player.is_jumping = True
-
-            new_x, new_y = self.player.calculate_new_position()
+            new_x, new_y = self.apply_gravity()
 
             # Horizontal Collision Check
             for row_index, row in enumerate(game_map):
@@ -390,3 +381,18 @@ class Game:
             self.player.draw(self.camera)
             pygame.display.update()
             clock.tick(60)
+
+    def apply_gravity(self):
+        if not self.player.is_jumping or self.player.vertical_velocity > 0:
+            self.player.vertical_velocity += self.player.gravity
+            self.player.is_jumping = True
+        new_x, new_y = self.player.calculate_new_position()
+        return new_x, new_y
+
+    def handle_event(self, event):
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        self.player.handle_event(event)
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            self.create_game_menu()

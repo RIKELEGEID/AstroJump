@@ -6,30 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9243c44f-c6da-40e0-8ef2-aebb09c4876e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_left/9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Idle_right/9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Jump_left/Jump_left.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/player/Jump_right/Jump_right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
